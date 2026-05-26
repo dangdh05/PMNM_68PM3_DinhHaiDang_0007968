@@ -1,18 +1,19 @@
 <?php
 class auth
 {
-    protected $user = array(
-        'admin' => '123456',
-        'dang' => '123456'
-    );
+    protected $user = [
+        'admin' => '2',
+        'ngoc' => '2'
+    ];
     public function login()
     {
-        if (isset($_POST['username']) && isset($_POST['password'])) {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = $_POST['username'] ?? '';
+            $password = $_POST['password'] ?? '';
             if (isset($this->user[$username]) && $this->user[$username] === $password) {
                 $_SESSION['username'] = $username;
-                header('Location: /home/index');
+                header('Location: /sinhvien/index');
                 exit();
             } else {
                 header('Location: /home/login');
