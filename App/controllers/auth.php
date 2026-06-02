@@ -2,12 +2,11 @@
 class auth
 {
     protected $user = [
-        'admin' => '2',
-        'ngoc' => '2'
+        'admin' => '123',
+        'dang' => '123'
     ];
     public function login()
     {
-
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
