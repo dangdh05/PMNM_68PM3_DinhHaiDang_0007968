@@ -1,78 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+<div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden;">
+    <div style="background: #f8f9fa; padding: 20px 30px; border-bottom: 1px solid #e9ecef;">
+        <h1 style="margin: 0; font-size: 22px; color: #2c3e50;">Cập nhật thông tin</h1>
+        <p style="margin: 5px 0 0; color: #6c757d; font-size: 14px;">Chỉnh sửa thông tin hồ sơ của sinh viên</p>
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chỉnh sửa thông tin sinh viên</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-            max-width: 1000px;
-            width: 90%;
-            margin: 40px auto;
-        }
+    <form action="<?= BASE_URL ?>/sinhvien/update/<?php echo $sinhvien['id']; ?>" method="POST" style="padding: 30px;">
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="HoTen" style="display: block; margin-bottom: 8px; font-weight: 600; color: #34495e;">Họ và tên</label>
+            <input type="text" id="HoTen" name="HoTen" class="form-control" value="<?php echo htmlspecialchars($sinhvien['HoTen']); ?>" required style="padding: 12px; font-size: 15px; border-radius: 6px; border: 1px solid #dce1e6; width: 100%; transition: border-color 0.2s;">
+        </div>
 
-        h2 {
-            color: #333;
-        }
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="MSSV" style="display: block; margin-bottom: 8px; font-weight: 600; color: #34495e;">Mã số sinh viên (MSSV)</label>
+            <input type="text" id="MSSV" name="MSSV" class="form-control" value="<?php echo htmlspecialchars($sinhvien['MSSV']); ?>" required style="padding: 12px; font-size: 15px; border-radius: 6px; border: 1px solid #dce1e6; width: 100%;">
+        </div>
 
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+        <div class="form-group" style="margin-bottom: 25px;">
+            <label for="GioiTinh" style="display: block; margin-bottom: 8px; font-weight: 600; color: #34495e;">Giới tính</label>
+            <select id="GioiTinh" name="GioiTinh" class="form-control" required style="padding: 12px; font-size: 15px; border-radius: 6px; border: 1px solid #dce1e6; width: 100%; background-color: #fff;">
+                <option value="Nam" <?php if ($sinhvien['GioiTinh'] == 'Nam') echo 'selected'; ?>>Nam</option>
+                <option value="Nữ" <?php if ($sinhvien['GioiTinh'] == 'Nữ') echo 'selected'; ?>>Nữ</option>
+                <option value="Khác" <?php if ($sinhvien['GioiTinh'] == 'Khác') echo 'selected'; ?>>Khác</option>
+            </select>
+        </div>
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        input[type="submit"] {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-    </style>
-</head>
-
-<body>
-    <h2>Chỉnh sửa thông tin sinh viên</h2>
-    <form action="/sinhvien/update/<?php echo $sinhvien['id']; ?>" method="POST">
-        <label for="HoTen">Họ tên:</label><br>
-        <input type="text" id="HoTen" name="HoTen" value="<?php echo $sinhvien['HoTen']; ?>"><br><br>
-
-        <label for="GioiTinh">Giới tính:</label><br>
-        <select id="GioiTinh" name="GioiTinh">
-            <option value="Nam" <?php if ($sinhvien['GioiTinh'] == 'Nam') echo 'selected'; ?>>Nam</option>
-            <option value="Nữ" <?php if ($sinhvien['GioiTinh'] == 'Nữ') echo 'selected'; ?>>Nữ</option>
-            <option value="Khác" <?php if ($sinhvien['GioiTinh'] == 'Khác') echo 'selected'; ?>>Khác</option>
-        </select><br><br>
-
-        <label for="MSSV">MSSV:</label><br>
-        <input type="text" id="MSSV" name="MSSV" value="<?php echo $sinhvien['MSSV']; ?>"><br><br>
-        <input type="submit" value="Cập nhật">
+        <div style="display: flex; gap: 15px; border-top: 1px solid #e9ecef; padding-top: 20px;">
+            <button type="submit" class="btn btn-warning" style="padding: 10px 25px; font-size: 15px; font-weight: 500; border-radius: 6px; color: #000;">Lưu thay đổi</button>
+            <a href="<?= BASE_URL ?>/sinhvien/index" class="btn" style="padding: 10px 25px; font-size: 15px; background: #e2e8f0; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 500;">Hủy bỏ</a>
+        </div>
     </form>
-</body>
-
-</html>
+</div>
+<style>
+    .form-control:focus { outline: none; border-color: #3498db !important; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); }
+</style>

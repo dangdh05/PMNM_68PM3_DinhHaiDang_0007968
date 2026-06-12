@@ -5,9 +5,10 @@ class middleware
 {
     function checklogin()
     {
-        $publicPages = ['/home/login', '/auth/login'];
-        if (!isset($_SESSION['username']) && !in_array($_SERVER['REQUEST_URI'], $publicPages)) {
-            header('Location: /home/login');
+        $url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '';
+        $publicPages = ['home/login', 'auth/login'];
+        if (!isset($_SESSION['username']) && !in_array($url, $publicPages)) {
+            header('Location: ' . BASE_URL . '/home/login');
             exit();
         }
     }

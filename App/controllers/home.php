@@ -3,8 +3,8 @@ class home
 {
     public function index()
     {
-        //require_once '../app/views/home/index.php';
-        require_once '../app/views/layout/masterlayout.php';
+        header('Location: ' . BASE_URL . '/sinhvien/index');
+        exit();
     }
     public function login()
     {

@@ -4,5 +4,5 @@ session_destroy();
 if (isset($_COOKIE['username'])) {
     setcookie('username', '', time() - 3600);
 }
-header('Location: /auth/login.php');
+header('Location: ' . BASE_URL . '/auth/login');
 exit();

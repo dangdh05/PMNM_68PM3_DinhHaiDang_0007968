@@ -1,89 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="simple-container" style="max-width: 1000px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 class="page-title" style="margin: 0;">Danh sách sinh viên</h1>
+        <a href="<?= BASE_URL ?>/sinhvien/create" class="btn btn-success">
+            Thêm sinh viên
+        </a>
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Sinh Viên</title>
-    <style>
-        .container {
-            max-width: 1000px;
-            width: 90%;
-            margin: 40px auto;
-            background-color: #ffffff;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th,
-        td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #bbbbbb;
-        }
-
-        .container h1 {
-            text-align: left;
-            margin-bottom: 15px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            margin: 4px;
-            text-decoration: none;
-            color: white;
-            background-color: #007bff;
-            border-radius: 4px;
-        }
-
-        .btn-warning {
-            background-color: #222aff;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-        }
-
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 20px 0;
-            background-color: #ffffff;
-            border-top: 1px solid #e2e8f0;
-            border-radius: 0 0 8px 8px;
-        }
-
-        .pagination-container .btn {
-            min-width: 42px;
-            text-align: center;
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <div class="header-container">
-            <h1>Danh sách sinh viên</h1>
-            <a href="/sinhvien/create" class="btn btn-success">
-                <i class="fa-solid fa-plus"></i> Thêm sinh viên</a>
-        </div>
+    <div style="overflow-x: auto; margin-bottom: 20px;">
         <table>
             <thead>
                 <tr>
@@ -91,33 +14,43 @@
                     <th>MSSV</th>
                     <th>Họ tên</th>
                     <th>Giới tính</th>
-                    <th>Thao tác</th>
+                    <th style="text-align: center;">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($sinhvien as $sv): ?>
-                    <tr>
-                        <!-- <td><?php echo $index + 1; ?></td> -->
-                        <td><?php echo $sv['id']; ?></td>
-                        <td><?php echo $sv['MSSV']; ?></td>
-                        <td><?php echo $sv['HoTen']; ?></td>
-                        <td><?php echo $sv['GioiTinh']; ?></td>
-                        <td>
-                            <a class="btn btn-warning" href="/sinhvien/edit/<?php echo $sv['id']; ?>">Sửa</a>
-                            <a class="btn btn-danger" href="/sinhvien/delete/<?php echo $sv['id']; ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này?')">Xóa</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                <?php if (empty($sinhvien)): ?>
+                    <tr><td colspan="5" style="text-align: center; padding: 20px;">Không có dữ liệu</td></tr>
+                <?php else: ?>
+                    <?php foreach ($sinhvien as $sv): ?>
+                        <tr>
+                            <td><?php echo $sv['id']; ?></td>
+                            <td style="font-weight: bold; color: #0d6efd;"><?php echo htmlspecialchars($sv['MSSV']); ?></td>
+                            <td><?php echo htmlspecialchars($sv['HoTen']); ?></td>
+                            <td><?php echo htmlspecialchars($sv['GioiTinh']); ?></td>
+                            <td style="text-align: center;">
+                                <a class="btn btn-warning" href="<?= BASE_URL ?>/sinhvien/edit/<?php echo $sv['id']; ?>" style="padding: 5px 10px; font-size: 13px;">
+                                    Sửa
+                                </a>
+                                <a class="btn btn-danger" href="<?= BASE_URL ?>/sinhvien/delete/<?php echo $sv['id']; ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này?')" style="padding: 5px 10px; font-size: 13px;">
+                                    Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
-        <div class="pagination-container">
-            <?php
-            $pageSize = 5; // Số sinh viên hiển thị trên mỗi trang
-            for ($i = 1; $i <= $totalPage; $i++) {
-                $offset = ($i - 1) * $pageSize;
-                echo '<a class="btn btn-primary" href="/sinhvien/index/' . $pageSize . '/' . $offset . '">' . $i . '</a> ';
-            }
-            ?>
-        </div>
     </div>
-</body>
+
+    <div style="display: flex; justify-content: center; gap: 5px;">
+        <?php
+        $pageSize = 5;
+        for ($i = 1; $i <= $totalPage; $i++) {
+            $offset = ($i - 1) * $pageSize;
+            $isActive = (isset($_GET['url']) && strpos($_GET['url'], "index/$pageSize/$offset") !== false) || ($i == 1 && !isset($_GET['url']) && empty($offset));
+            $btnClass = $isActive ? "background: #0d6efd; color: white;" : "background: #fff; color: #333; border: 1px solid #ccc;";
+            echo '<a class="btn" style="min-width: 35px; text-align: center; border-radius: 4px; ' . $btnClass . '" href="' . BASE_URL . '/sinhvien/index/' . $pageSize . '/' . $offset . '">' . $i . '</a>';
+        }
+        ?>
+    </div>
+</div>

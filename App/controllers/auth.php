@@ -12,12 +12,22 @@ class auth
             $password = $_POST['password'] ?? '';
             if (isset($this->user[$username]) && $this->user[$username] === $password) {
                 $_SESSION['username'] = $username;
-                header('Location: /sinhvien/index');
+                header('Location: ' . BASE_URL . '/sinhvien/index');
                 exit();
             } else {
-                header('Location: /home/login');
+                header('Location: ' . BASE_URL . '/home/login');
                 exit();
             }
         }
+    }
+    public function logout()
+    {
+        session_start();
+        session_destroy();
+        if (isset($_COOKIE['username'])) {
+            setcookie('username', '', time() - 3600, '/');
+        }
+        header('Location: ' . BASE_URL . '/home/login');
+        exit();
     }
 }
