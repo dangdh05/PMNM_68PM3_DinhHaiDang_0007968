@@ -5,11 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Sinh Viên</title>
-</head>
-
-<body>
-    <h1>Danh sách sinh viên</h1>
     <style>
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            margin: 40px auto;
+            background-color: #ffffff;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -23,29 +26,98 @@
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #bbbbbb;
+        }
+
+        .container h1 {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 4px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+
+        .btn-warning {
+            background-color: #222aff;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 20px 0;
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .pagination-container .btn {
+            min-width: 42px;
+            text-align: center;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>MSSV</th>
-                <th>Họ tên</th>
-                <th>Giới tính</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($sinhvien as $sv): ?>
-                <tr>
-                    <td><?php echo $sv['id']; ?></td>
-                    <td><?php echo $sv['MSSV']; ?></td>
-                    <td><?php echo $sv['HoTen']; ?></td>
-                    <td><?php echo $sv['GioiTinh']; ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</body>
+</head>
 
-</html>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <h1>Danh sách sinh viên</h1>
+            <a href="/sinhvien/create" class="btn btn-success">
+                <i class="fa-solid fa-plus"></i> Thêm sinh viên</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>MSSV</th>
+                    <th>Họ tên</th>
+                    <th>Giới tính</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($sinhvien as $sv): ?>
+                    <tr>
+                        <!-- <td><?php echo $index + 1; ?></td> -->
+                        <td><?php echo $sv['id']; ?></td>
+                        <td><?php echo $sv['MSSV']; ?></td>
+                        <td><?php echo $sv['HoTen']; ?></td>
+                        <td><?php echo $sv['GioiTinh']; ?></td>
+                        <td>
+                            <a class="btn btn-warning" href="/sinhvien/edit/<?php echo $sv['id']; ?>">Sửa</a>
+                            <a class="btn btn-danger" href="/sinhvien/delete/<?php echo $sv['id']; ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này?')">Xóa</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <div class="pagination-container">
+            <?php
+            $pageSize = 5; // Số sinh viên hiển thị trên mỗi trang
+            for ($i = 1; $i <= $totalPage; $i++) {
+                $offset = ($i - 1) * $pageSize;
+                echo '<a class="btn btn-primary" href="/sinhvien/index/' . $pageSize . '/' . $offset . '">' . $i . '</a> ';
+            }
+            ?>
+        </div>
+    </div>
+</body>
