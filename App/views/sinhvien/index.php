@@ -14,12 +14,13 @@
                     <th>MSSV</th>
                     <th>Họ tên</th>
                     <th>Giới tính</th>
+                    <th>Lớp học</th>
                     <th style="text-align: center;">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($sinhvien)): ?>
-                    <tr><td colspan="5" style="text-align: center; padding: 20px;">Không có dữ liệu</td></tr>
+                    <tr><td colspan="6" style="text-align: center; padding: 20px;">Không có dữ liệu</td></tr>
                 <?php else: ?>
                     <?php foreach ($sinhvien as $sv): ?>
                         <tr>
@@ -27,6 +28,7 @@
                             <td style="font-weight: bold; color: #0d6efd;"><?php echo htmlspecialchars($sv['MSSV']); ?></td>
                             <td><?php echo htmlspecialchars($sv['HoTen']); ?></td>
                             <td><?php echo htmlspecialchars($sv['GioiTinh']); ?></td>
+                            <td><?php echo htmlspecialchars($sv['MaLop'] ?? 'Chưa xếp lớp'); ?></td>
                             <td style="text-align: center;">
                                 <a class="btn btn-warning" href="<?= BASE_URL ?>/sinhvien/edit/<?php echo $sv['id']; ?>" style="padding: 5px 10px; font-size: 13px;">
                                     Sửa
