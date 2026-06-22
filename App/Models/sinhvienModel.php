@@ -29,18 +29,42 @@ class sinhvienModel
             return false;
         }
     }
-    public function paging($limit = 5, $offset = 0, $search = '')
+    public function paging($limit = 5, $offset = 0, $search = '', $sort = 'id', $order = 'ASC')
     {
-        $query = "SELECT * FROM sinhvien LIMIT :limit OFFSET :offset ";
+        $whereClause = "";
+        if (!empty($search)) {
+            $whereClause = " WHERE MSSV LIKE :search1 OR HoTen LIKE :search2 OR MaLop LIKE :search3 ";
+        }
+
+        $allowedSorts = ['id', 'MSSV', 'HoTen', 'MaLop'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+        $order = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+
+        $query = "SELECT * FROM sinhvien" . $whereClause . " ORDER BY " . $sort . " " . $order . " LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        if (!empty($search)) {
+            $searchParam = "%" . $search . "%";
+            $stmt->bindParam(':search1', $searchParam, PDO::PARAM_STR);
+            $stmt->bindParam(':search2', $searchParam, PDO::PARAM_STR);
+            $stmt->bindParam(':search3', $searchParam, PDO::PARAM_STR);
+        }
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         //Tính tổng số bản ghi
-        $selectAllQuery = $this->conn->query("SELECT COUNT(*) FROM sinhvien");
-        $totalRecord = $selectAllQuery->fetchColumn();
+        $countQuery = "SELECT COUNT(*) FROM sinhvien" . $whereClause;
+        $stmtCount = $this->conn->prepare($countQuery);
+        if (!empty($search)) {
+            $stmtCount->bindParam(':search1', $searchParam, PDO::PARAM_STR);
+            $stmtCount->bindParam(':search2', $searchParam, PDO::PARAM_STR);
+            $stmtCount->bindParam(':search3', $searchParam, PDO::PARAM_STR);
+        }
+        $stmtCount->execute();
+        $totalRecord = $stmtCount->fetchColumn();
 
         $totalPage = ceil($totalRecord / $limit);
 

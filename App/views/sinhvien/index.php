@@ -1,3 +1,7 @@
+<?php
+$sort = $sort ?? 'id';
+$order = $order ?? 'ASC';
+?>
 <div class="simple-container" style="max-width: 1000px; margin: 0 auto;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h1 class="page-title" style="margin: 0;">Danh sách sinh viên</h1>
@@ -5,6 +9,33 @@
             Thêm sinh viên
         </a>
     </div>
+
+    <form action="<?= BASE_URL ?>/sinhvien/index" method="GET" style="margin-bottom: 20px;">
+        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <input type="text" name="search" value="<?php echo htmlspecialchars($search ?? ''); ?>" placeholder="Tìm theo MSSV, Họ tên, Lớp..." style="padding: 10px 15px; border: 1px solid #ced4da; border-radius: 4px; width: 350px; font-size: 15px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#86b7fe'" onblur="this.style.borderColor='#ced4da'">
+            <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 15px;">Tìm kiếm</button>
+            <button type="button" class="btn btn-warning" onclick="document.getElementById('sort-panel').style.display = document.getElementById('sort-panel').style.display === 'none' ? 'flex' : 'none';" style="padding: 10px 20px; font-size: 15px; color: #000;">
+                <i class="fas fa-filter"></i> Bộ lọc & Sắp xếp
+            </button>
+            <?php if (!empty($search)): ?>
+                <a href="<?= BASE_URL ?>/sinhvien/index" class="btn" style="background: #6c757d; color: white; padding: 10px 20px; font-size: 15px; text-decoration: none;">Hủy</a>
+            <?php endif; ?>
+        </div>
+
+        <div id="sort-panel" style="display: <?= ($sort != 'id' || $order != 'ASC') ? 'flex' : 'none' ?>; gap: 10px; background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #e9ecef; align-items: center;">
+            <span style="font-weight: bold; margin-right: 10px; color: #333;">Sắp xếp theo:</span>
+            <select name="sort" class="form-control" style="width: 150px; display: inline-block;">
+                <option value="id" <?= $sort == 'id' ? 'selected' : '' ?>>Mặc định (ID)</option>
+                <option value="MSSV" <?= $sort == 'MSSV' ? 'selected' : '' ?>>MSSV</option>
+                <option value="HoTen" <?= $sort == 'HoTen' ? 'selected' : '' ?>>Họ tên</option>
+            </select>
+            <select name="order" class="form-control" style="width: 150px; display: inline-block;">
+                <option value="ASC" <?= $order == 'ASC' ? 'selected' : '' ?>>Tăng dần</option>
+                <option value="DESC" <?= $order == 'DESC' ? 'selected' : '' ?>>Giảm dần</option>
+            </select>
+            <button type="submit" class="btn btn-success" style="padding: 8px 15px;">Áp dụng</button>
+        </div>
+    </form>
 
     <div style="overflow-x: auto; margin-bottom: 20px;">
         <table>
@@ -51,7 +82,13 @@
             $offset = ($i - 1) * $pageSize;
             $isActive = (isset($_GET['url']) && strpos($_GET['url'], "index/$pageSize/$offset") !== false) || ($i == 1 && !isset($_GET['url']) && empty($offset));
             $btnClass = $isActive ? "background: #0d6efd; color: white;" : "background: #fff; color: #333; border: 1px solid #ccc;";
-            echo '<a class="btn" style="min-width: 35px; text-align: center; border-radius: 4px; ' . $btnClass . '" href="' . BASE_URL . '/sinhvien/index/' . $pageSize . '/' . $offset . '">' . $i . '</a>';
+            $searchQuery = !empty($search) ? '?search=' . urlencode($search) : '';
+            if (empty($searchQuery)) {
+                $searchQuery = "?sort={$sort}&order={$order}";
+            } else {
+                $searchQuery .= "&sort={$sort}&order={$order}";
+            }
+            echo '<a class="btn" style="min-width: 35px; text-align: center; border-radius: 4px; ' . $btnClass . '" href="' . BASE_URL . '/sinhvien/index/' . $pageSize . '/' . $offset . $searchQuery . '">' . $i . '</a>';
         }
         ?>
     </div>

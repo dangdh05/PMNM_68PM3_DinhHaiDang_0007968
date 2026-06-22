@@ -5,8 +5,14 @@ class sinhvien extends Controller
 {
     public function index($limit = 5, $offset = 0, $search = '')
     {
+        if (isset($_GET['search'])) {
+            $search = $_GET['search'];
+        }
+        $sort = $_GET['sort'] ?? 'id';
+        $order = $_GET['order'] ?? 'ASC';
+
         $sinhvienModel = $this->model('sinhvienModel');
-        $result = $sinhvienModel->paging($limit, $offset, $search);
+        $result = $sinhvienModel->paging($limit, $offset, $search, $sort, $order);
 
         $sinhvien = $result['sinhvien'];
         $totalPage = $result['totalPage'];
@@ -15,7 +21,10 @@ class sinhvien extends Controller
             'sinhvien/index',
             [
                 'sinhvien' => $sinhvien,
-                'totalPage' => $totalPage
+                'totalPage' => $totalPage,
+                'search' => $search,
+                'sort' => $sort,
+                'order' => $order
             ],
             'Danh sách sinh viên'
         );
