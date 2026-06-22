@@ -33,7 +33,14 @@ $order = $order ?? 'ASC';
                 <option value="ASC" <?= $order == 'ASC' ? 'selected' : '' ?>>Tăng dần</option>
                 <option value="DESC" <?= $order == 'DESC' ? 'selected' : '' ?>>Giảm dần</option>
             </select>
-            <button type="submit" class="btn btn-success" style="padding: 8px 15px;">Áp dụng</button>
+            <span style="font-weight: bold; margin-left: 10px; margin-right: 10px; color: #333;">Hiển thị:</span>
+            <select name="limit" class="form-control" style="width: 120px; display: inline-block;">
+                <option value="5" <?= $limit == 5 ? 'selected' : '' ?>>5 dòng</option>
+                <option value="10" <?= $limit == 10 ? 'selected' : '' ?>>10 dòng</option>
+                <option value="20" <?= $limit == 20 ? 'selected' : '' ?>>20 dòng</option>
+                <option value="50" <?= $limit == 50 ? 'selected' : '' ?>>50 dòng</option>
+            </select>
+            <button type="submit" class="btn btn-success" style="padding: 8px 15px; margin-left: 10px;">Áp dụng</button>
         </div>
     </form>
 
@@ -77,16 +84,16 @@ $order = $order ?? 'ASC';
 
     <div style="display: flex; justify-content: center; gap: 5px;">
         <?php
-        $pageSize = 5;
+        $pageSize = $limit;
         for ($i = 1; $i <= $totalPage; $i++) {
             $offset = ($i - 1) * $pageSize;
             $isActive = (isset($_GET['url']) && strpos($_GET['url'], "index/$pageSize/$offset") !== false) || ($i == 1 && !isset($_GET['url']) && empty($offset));
             $btnClass = $isActive ? "background: #0d6efd; color: white;" : "background: #fff; color: #333; border: 1px solid #ccc;";
             $searchQuery = !empty($search) ? '?search=' . urlencode($search) : '';
             if (empty($searchQuery)) {
-                $searchQuery = "?sort={$sort}&order={$order}";
+                $searchQuery = "?sort={$sort}&order={$order}&limit={$limit}";
             } else {
-                $searchQuery .= "&sort={$sort}&order={$order}";
+                $searchQuery .= "&sort={$sort}&order={$order}&limit={$limit}";
             }
             echo '<a class="btn" style="min-width: 35px; text-align: center; border-radius: 4px; ' . $btnClass . '" href="' . BASE_URL . '/sinhvien/index/' . $pageSize . '/' . $offset . $searchQuery . '">' . $i . '</a>';
         }

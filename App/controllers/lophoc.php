@@ -5,6 +5,10 @@ class lophoc extends Controller
 {
     public function index($limit = 5, $offset = 0, $search = '')
     {
+        if (isset($_GET['limit']) && is_numeric($_GET['limit']) && $_GET['limit'] > 0) {
+            $limit = (int)$_GET['limit'];
+        }
+        
         $lophocModel = $this->model('lophocModel');
         $result = $lophocModel->paging($limit, $offset, $search);
 
@@ -15,7 +19,8 @@ class lophoc extends Controller
             'lophoc/index',
             [
                 'lophoc' => $lophoc,
-                'totalPage' => $totalPage
+                'totalPage' => $totalPage,
+                'limit' => $limit
             ],
             'Danh sách lớp học'
         );

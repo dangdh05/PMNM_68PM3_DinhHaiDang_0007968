@@ -8,6 +8,9 @@ class sinhvien extends Controller
         if (isset($_GET['search'])) {
             $search = $_GET['search'];
         }
+        if (isset($_GET['limit']) && is_numeric($_GET['limit']) && $_GET['limit'] > 0) {
+            $limit = (int)$_GET['limit'];
+        }
         $sort = $_GET['sort'] ?? 'id';
         $order = $_GET['order'] ?? 'ASC';
 
@@ -24,7 +27,8 @@ class sinhvien extends Controller
                 'totalPage' => $totalPage,
                 'search' => $search,
                 'sort' => $sort,
-                'order' => $order
+                'order' => $order,
+                'limit' => $limit
             ],
             'Danh sách sinh viên'
         );

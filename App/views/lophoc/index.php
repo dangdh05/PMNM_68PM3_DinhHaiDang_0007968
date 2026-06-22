@@ -6,6 +6,21 @@
         </a>
     </div>
 
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <form action="<?= BASE_URL ?>/lophoc/index" method="GET" style="margin: 0;">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <span style="font-weight: bold; color: #333;">Hiển thị:</span>
+                <select name="limit" class="form-control" style="width: 120px; display: inline-block;">
+                    <option value="5" <?= ($limit ?? 5) == 5 ? 'selected' : '' ?>>5 dòng</option>
+                    <option value="10" <?= ($limit ?? 5) == 10 ? 'selected' : '' ?>>10 dòng</option>
+                    <option value="20" <?= ($limit ?? 5) == 20 ? 'selected' : '' ?>>20 dòng</option>
+                    <option value="50" <?= ($limit ?? 5) == 50 ? 'selected' : '' ?>>50 dòng</option>
+                </select>
+                <button type="submit" class="btn btn-success" style="padding: 8px 15px;">Áp dụng</button>
+            </div>
+        </form>
+    </div>
+
     <div style="overflow-x: auto; margin-bottom: 20px;">
         <table>
             <thead>
@@ -38,12 +53,13 @@
 
     <div style="display: flex; justify-content: center; gap: 5px;">
         <?php
-        $pageSize = 5;
+        $pageSize = $limit ?? 5;
         for ($i = 1; $i <= $totalPage; $i++) {
             $offset = ($i - 1) * $pageSize;
             $isActive = (isset($_GET['url']) && strpos($_GET['url'], "index/$pageSize/$offset") !== false) || ($i == 1 && !isset($_GET['url']) && empty($offset));
             $btnClass = $isActive ? "background: #0d6efd; color: white;" : "background: #fff; color: #333; border: 1px solid #ccc;";
-            echo '<a class="btn" style="min-width: 35px; text-align: center; border-radius: 4px; ' . $btnClass . '" href="' . BASE_URL . '/lophoc/index/' . $pageSize . '/' . $offset . '">' . $i . '</a>';
+            $limitQuery = "?limit=" . $pageSize;
+            echo '<a class="btn" style="min-width: 35px; text-align: center; border-radius: 4px; ' . $btnClass . '" href="' . BASE_URL . '/lophoc/index/' . $pageSize . '/' . $offset . $limitQuery . '">' . $i . '</a>';
         }
         ?>
     </div>
