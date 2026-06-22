@@ -24,6 +24,18 @@
             </select>
         </div>
 
+        <div class="form-group" style="margin-bottom: 25px;">
+            <label for="MaLop" style="display: block; margin-bottom: 8px; font-weight: 600; color: #34495e;">Lớp học</label>
+            <select id="MaLop" name="MaLop" class="form-control" style="padding: 12px; font-size: 15px; border-radius: 6px; border: 1px solid #dce1e6; width: 100%; background-color: #fff;">
+                <option value="">-- Chọn lớp học --</option>
+                <?php if (!empty($danhSachLop)): ?>
+                    <?php foreach ($danhSachLop as $lop): ?>
+                        <option value="<?php echo htmlspecialchars($lop['MaLop']); ?>" <?php if (($sinhvien['MaLop'] ?? '') == $lop['MaLop']) echo 'selected'; ?>><?php echo htmlspecialchars($lop['MaLop']); ?></option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+        </div>
+
         <div style="display: flex; gap: 15px; border-top: 1px solid #e9ecef; padding-top: 20px;">
             <button type="submit" class="btn btn-warning" style="padding: 10px 25px; font-size: 15px; font-weight: 500; border-radius: 6px; color: #000;">Lưu thay đổi</button>
             <a href="<?= BASE_URL ?>/sinhvien/index" class="btn" style="padding: 10px 25px; font-size: 15px; background: #e2e8f0; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 500;">Hủy bỏ</a>

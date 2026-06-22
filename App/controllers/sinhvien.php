@@ -23,6 +23,8 @@ class sinhvien extends Controller
 
     public function create()
     {
+        $lophocModel = $this->model('lophocModel');
+        $danhSachLop = $lophocModel->getAllLophoc();
         require_once '../app/views/sinhvien/create.php';
     }
 
@@ -33,10 +35,11 @@ class sinhvien extends Controller
             $HoTen = $_POST['HoTen'] ?? '';
             $GioiTinh = $_POST['GioiTinh'] ?? '';
             $MSSV = $_POST['MSSV'] ?? '';
+            $MaLop = $_POST['MaLop'] ?? null;
 
             $sinhvienModel = $this->model('sinhvienModel');
 
-            if ($sinhvienModel->create($HoTen, $GioiTinh, $MSSV)) {
+            if ($sinhvienModel->create($HoTen, $GioiTinh, $MSSV, $MaLop)) {
                 header('Location: ' . BASE_URL . '/sinhvien/index');
                 exit();
             }
@@ -48,8 +51,10 @@ class sinhvien extends Controller
     public function edit($id)
     {
         $sinhvienModel = $this->model('sinhvienModel');
+        $lophocModel = $this->model('lophocModel');
 
         $sinhvien = $sinhvienModel->findById($id);
+        $danhSachLop = $lophocModel->getAllLophoc();
 
         require_once '../app/views/sinhvien/edit.php';
     }
@@ -61,10 +66,11 @@ class sinhvien extends Controller
             $HoTen = $_POST['HoTen'] ?? '';
             $GioiTinh = $_POST['GioiTinh'] ?? '';
             $MSSV = $_POST['MSSV'] ?? '';
+            $MaLop = $_POST['MaLop'] ?? null;
 
             $sinhvienModel = $this->model('sinhvienModel');
 
-            if ($sinhvienModel->update($id, $HoTen, $GioiTinh, $MSSV)) {
+            if ($sinhvienModel->update($id, $HoTen, $GioiTinh, $MSSV, $MaLop)) {
                 header('Location: ' . BASE_URL . '/sinhvien/index');
                 exit();
             }
