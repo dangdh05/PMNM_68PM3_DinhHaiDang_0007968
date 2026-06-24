@@ -10,7 +10,7 @@ class lophocModel
 
     public function getAllLophoc()
     {
-        $query = "SELECT * FROM LopHoc";
+        $query = "SELECT * FROM lophoc";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -18,7 +18,7 @@ class lophocModel
     
     public function create($MaLop)
     {
-        $query = "INSERT INTO LopHoc (MaLop) VALUES (:MaLop)";
+        $query = "INSERT INTO lophoc (MaLop) VALUES (:MaLop)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':MaLop', $MaLop);
         if ($stmt->execute()) {
@@ -30,7 +30,7 @@ class lophocModel
     
     public function paging($limit = 5, $offset = 0, $search = '')
     {
-        $query = "SELECT * FROM LopHoc LIMIT :limit OFFSET :offset";
+        $query = "SELECT * FROM lophoc LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -38,7 +38,7 @@ class lophocModel
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         //Tính tổng số bản ghi
-        $selectAllQuery = $this->conn->query("SELECT COUNT(*) FROM LopHoc");
+        $selectAllQuery = $this->conn->query("SELECT COUNT(*) FROM lophoc");
         $totalRecord = $selectAllQuery->fetchColumn();
 
         $totalPage = ceil($totalRecord / $limit);
@@ -48,7 +48,7 @@ class lophocModel
 
     public function findById($MaLop)
     {
-        $query = "SELECT * FROM LopHoc WHERE MaLop = :MaLop";
+        $query = "SELECT * FROM lophoc WHERE MaLop = :MaLop";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':MaLop', $MaLop, PDO::PARAM_STR);
         $stmt->execute();
@@ -57,7 +57,7 @@ class lophocModel
 
     public function update($oldMaLop, $newMaLop)
     {
-        $query = "UPDATE LopHoc SET MaLop = :newMaLop WHERE MaLop = :oldMaLop";
+        $query = "UPDATE lophoc SET MaLop = :newMaLop WHERE MaLop = :oldMaLop";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':newMaLop', $newMaLop);
         $stmt->bindParam(':oldMaLop', $oldMaLop);
@@ -66,7 +66,7 @@ class lophocModel
 
     public function delete($MaLop)
     {
-        $query = "DELETE FROM LopHoc WHERE MaLop = :MaLop";
+        $query = "DELETE FROM lophoc WHERE MaLop = :MaLop";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':MaLop', $MaLop, PDO::PARAM_STR);
         return $stmt->execute();
